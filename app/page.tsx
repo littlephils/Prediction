@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { money, odds } from "@/lib/format";
 import { questionText, yesVerb, settledLabel } from "@/lib/market";
 import { themeFor } from "@/components/theme";
@@ -21,7 +21,7 @@ export default function GuestPage() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [ready, setReady] = useState(false);
   const [tab, setTab] = useState<Tab>("markets");
-  const [betId, setBetId] = useState<string | null>(null);
+  const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [toast, setToast] = useState<Toast>(null);
 
@@ -72,6 +72,12 @@ export default function GuestPage() {
     return () => clearInterval(id);
   }, [refresh, username]);
 
+  useEffect(() => {
+    if (!selectedMarket) return;
+    const refreshed = markets.find((m) => m.id === selectedMarket.id);
+    if (refreshed) setSelectedMarket(refreshed);
+  }, [markets, selectedMarket]);
+
   const join = useCallback(
     async (name: string) => {
       const res = await fetch("/api/session", {
@@ -121,14 +127,10 @@ export default function GuestPage() {
     setUsername(null);
     setBets([]);
     setBalance(0);
+    setSelectedMarket(null);
     setMenuOpen(false);
     setTab("markets");
   }, []);
-
-  const betMarket = useMemo(
-    () => (betId ? markets.find((m) => m.id === betId && m.status === "open") ?? null : null),
-    [betId, markets],
-  );
 
   if (!ready) return null;
 
@@ -163,7 +165,7 @@ export default function GuestPage() {
                 name={username}
                 balance={balance}
                 markets={markets}
-                onBet={(m) => setBetId(m.id)}
+                onBet={setSelectedMarket}
               />
             )}
             {tab === "bets" && <BetsTab bets={bets} />}
@@ -172,11 +174,11 @@ export default function GuestPage() {
 
           <BottomNav tab={tab} onTab={setTab} />
 
-          {betMarket && (
+          {selectedMarket && (
             <BetSheet
-              market={betMarket}
+              market={selectedMarket}
               balance={balance}
-              onClose={() => setBetId(null)}
+              onClose={() => setSelectedMarket(null)}
               onBet={placeBet}
             />
           )}
