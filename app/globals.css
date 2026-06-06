@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-[#070314] text-slate-100 antialiased;
+  background-image:
+    radial-gradient(55rem 55rem at 110% -10%, rgba(139, 92, 246, 0.16), transparent 60%),
+    radial-gradient(45rem 45rem at -10% 0%, rgba(236, 72, 153, 0.12), transparent 55%),
+    radial-gradient(60rem 60rem at 50% 120%, rgba(34, 211, 238, 0.1), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Deep-space backdrop for the landing screen: tiled stars + nebula glows. */
+.starfield {
+  background-color: #060116;
+  background-image:
+    radial-gradient(1px 1px at 30px 40px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 90px 110px, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1.5px 1.5px at 160px 60px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 210px 180px, rgba(196, 181, 253, 0.8), transparent),
+    radial-gradient(1px 1px at 50px 200px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(52rem 42rem at 78% 14%, rgba(139, 92, 246, 0.32), transparent 60%),
+    radial-gradient(46rem 46rem at 14% 86%, rgba(56, 189, 248, 0.2), transparent 60%),
+    radial-gradient(40rem 40rem at 50% 50%, rgba(217, 70, 239, 0.14), transparent 62%);
+  background-repeat: repeat, repeat, repeat, repeat, repeat, no-repeat, no-repeat, no-repeat;
+  background-size:
+    240px 240px, 240px 240px, 300px 300px, 360px 360px, 200px 200px, cover, cover, cover;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Slim dark scrollbars for the admin tables. */
+.thin-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
